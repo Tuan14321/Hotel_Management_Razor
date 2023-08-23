@@ -28,7 +28,7 @@
 
     <!-- Template Main CSS File -->
     <link href="~/assets/css/style.css" rel="stylesheet">
-    <link href="~/css/site.css" rel="stylesheet">
+    @*<link href="~/css/site.css" rel="stylesheet">*@
 
 
     <!-- =======================================================
@@ -41,6 +41,28 @@
     <style>
         li{
             list-style: none !important;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .floor {
+            width: 150px;
+            height: 150px;
+            border-radius: 10px;
+        }
+
+        .room {
+            width: 150px !important;
+            height: 150px !important;
+            border-radius: 10px;
+        }
+
+        .img-product:hover {
+            cursor: pointer
         }
     </style>
 </head>
@@ -65,15 +87,19 @@
                 <button type="submit" title="Search"><i class="bi bi-search"></i></button>
             </form>
         </div><!-- End Search Bar -->*@
-        <div>
-            <ul class="d-flex align-items-between h-100">
-                <li class="mx-2 text-success">Available: <span class="bg-success px-2 rounded-1 text-white">@_unitOfWork.RoomRepository.CountRoomByStatus(1)</span></li>
-                <li class="mx-2 text-danger">Occupied: <span class="bg-danger px-2 rounded-1 text-white">@_unitOfWork.RoomRepository.CountRoomByStatus(2)</span></li>
-                <li class="mx-2 text-secondary">Unclean: <span class="bg-secondary px-2 rounded-1 text-white">@_unitOfWork.RoomRepository.CountRoomByStatus(3)</span></li>
-                <li class="mx-2 text-warning">Maintenance: <span class="bg-warning px-2 rounded-1 text-white">@_unitOfWork.RoomRepository.CountRoomByStatus(4)</span></li>
+        @if (User.Identity?.IsAuthenticated ?? false)
+        {
+            <div>
+                <ul class="d-flex align-items-between h-100">
+                    <li class="mx-2 text-success">Available: <span class="bg-success px-2 rounded-1 text-white">@_unitOfWork.RoomRepository.CountRoomByStatus(1)</span></li>
+                    <li class="mx-2 text-danger">Occupied: <span class="bg-danger px-2 rounded-1 text-white">@_unitOfWork.RoomRepository.CountRoomByStatus(2)</span></li>
+                    <li class="mx-2 text-secondary">Unclean: <span class="bg-secondary px-2 rounded-1 text-white">@_unitOfWork.RoomRepository.CountRoomByStatus(3)</span></li>
+                    <li class="mx-2 text-warning">Maintenance: <span class="bg-warning px-2 rounded-1 text-white">@_unitOfWork.RoomRepository.CountRoomByStatus(4)</span></li>
 
-            </ul>
-        </div>
+                </ul>
+            </div>
+        }
+      
 
         <nav class="header-nav ms-auto">
             <ul class="d-flex align-items-center">

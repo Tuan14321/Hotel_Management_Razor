@@ -12,12 +12,12 @@
                 <h2 class="text-center mb-3">Login</h2>
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-floating">
-                    <input asp-for="Input.Email" value="" class="form-control" autocomplete="username" aria-required="true" />
+                    <input asp-for="Input.Email" value="admin123@gmail.com" class="form-control" autocomplete="username" aria-required="true" />
                     <label asp-for="Input.Email" class="form-label"></label>
                     <span asp-validation-for="Input.Email" class="text-danger"></span>
                 </div>
                 <div class="form-floating">
-                    <input asp-for="Input.Password" value="" class="form-control" autocomplete="current-password" aria-required="true" />
+                    <input asp-for="Input.Password" value="Admin@123" class="form-control" autocomplete="current-password" aria-required="true" />
                     <label asp-for="Input.Password" class="form-label"></label>
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>

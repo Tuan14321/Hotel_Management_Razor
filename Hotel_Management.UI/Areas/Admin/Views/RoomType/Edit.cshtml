@@ -1,0 +1,44 @@
+﻿@model RoomType
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="d-flex justify-content-center">
+    <div class="card shadow mt-5 w-50">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Update Company</h6>
+        </div>
+        <div class="card-body mt-2">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="RoomTypeId" />
+                <div class="form-group">
+                    <label asp-for="RoomTypeName" class="control-label"></label>
+                    <input asp-for="RoomTypeName" class="form-control" />
+                    <span asp-validation-for="RoomTypeName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Price" class="control-label"></label>
+                    <input asp-for="Price" class="form-control" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="QuantityBed" class="control-label"></label>
+                    <input asp-for="QuantityBed" class="form-control" />
+                    <span asp-validation-for="QuantityBed" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+            <div>
+                <a asp-action="Index">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

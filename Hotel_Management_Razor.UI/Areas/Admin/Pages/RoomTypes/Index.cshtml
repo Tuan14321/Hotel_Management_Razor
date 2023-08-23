@@ -1,0 +1,49 @@
+﻿@page
+@model Hotel_Management_Razor.UI.Areas.Admin.Pages.RoomTypes.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Pages/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RoomType[0].RoomTypeName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RoomType[0].Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RoomType[0].QuantityBed)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.RoomType) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoomTypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QuantityBed)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.RoomTypeId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.RoomTypeId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.RoomTypeId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

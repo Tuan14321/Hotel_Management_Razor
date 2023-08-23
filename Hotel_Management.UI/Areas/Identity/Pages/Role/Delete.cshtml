@@ -1,0 +1,35 @@
+﻿@page
+@model FA.JustBlog.UI.Areas.Identity.Pages.Roles.DeleteModel
+@{
+    ViewData["Title"] = "Delete Role";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h4>@ViewData["Title"]</h4>
+
+
+<div class="vh-100">
+    <div class="container my-5">
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">Delete Role</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>Are You Sure To Delete Role <strong>@Model.Input.Name</strong> </p>
+                        <form method="post">
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            <input type="hidden" asp-for="Input.Id">
+                            <input type="hidden" asp-for="isConfirmed">
+                            <a class="btn btn-primary" asp-page="./Index">List Role</a>
+                            <button type="submit" asp-page="./Delete" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

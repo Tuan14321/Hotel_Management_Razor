@@ -1,0 +1,66 @@
+﻿@page "/admin/role"
+@model Hotel_Management.UI.Areas.Identity.Pages.Roles.IndexModel
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="vh-100">
+    <div class="container my-5">
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">List Role</h6>
+                <form method="post" class="d-inline">
+                    <button data-bs-toggle="modal" data-bs-target="#addRole"
+                            class="btn btn-primary"
+                            asp-page="./Add"
+                            asp-page-handler="StartNewRole">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Add role</span>
+                    </button>
+                </form>
+                @* <button data-bs-toggle="modal" data-bs-target="#addTag" class="btn btn-primary"><i class="fa-solid fa-plus"></i> <span>Create New</span></button>*@
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>RoleId</th>
+                                <th>Role Name</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var role in Model.Roles)
+                            {
+                                <tr>
+                                    <td>@role.Id</td>
+                                    <td>@role.Name</td>
+                                    <td>
+                                        <form method="post" class="d-inline">
+                                            <button name="Input.Id" value="@role.Id"
+                                                    class="btn btn-success btn-sm"
+                                                asp-page="./Add"
+                                                asp-page-handler="StartUpdate">
+                                                Update role
+                                            </button>
+                                        </form>
+                                        <form method="post" class="d-inline">
+                                            <button name="Input.Id"
+                                                    value="@role.Id"
+                                                    class="btn btn-danger btn-sm"
+                                                asp-page="./Delete">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,44 @@
+﻿@page
+@model Hotel_Management_Razor.UI.Areas.Admin.Pages.Floors.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Pages/Shared/_LayoutAdmin.cshtml";
+}
+<div class="card shadow w-50">
+    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+        <h6 class="m-0 font-weight-bold text-primary">List Floor</h6>
+        <p>
+            <a asp-page="Create">Create New</a>
+        </p>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive mt-2">
+            <table class="table table-hover" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Floor[0].FloorName)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Floor)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FloorName)
+                            </td>
+                            <td>
+                                <a class="btn btn-outline-success" asp-page="./Edit" asp-route-id="@item.FloorId">Edit <i class="bi bi-pencil"></i></a>
+                                <a class="btn btn-outline-warning" asp-page="./Details" asp-route-id="@item.FloorId">Details <i class="bi bi-eye"></i></a>
+                                <a class="btn btn-outline-danger" asp-page="./Delete" asp-route-id="@item.FloorId">Delete <i class="bi bi-trash3"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

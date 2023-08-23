@@ -1,0 +1,61 @@
+﻿@page "/admin/role/users/"
+@model FA.JustBlog.UI.Areas.Identity.Pages.Roles.UserModel
+@{
+    ViewData["Title"] = "List Users";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="vh-100">
+    <div class="container my-5">
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">List Users</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" width="100%" cellspacing="0">
+                        <tr>
+                            <th>User</th>
+                            <th>Roles</th>
+                            <th>Action</th>
+                        </tr>
+                        @foreach (var user in Model.users)
+                        {
+                            <tr>
+                                <td>@user.UserName</td>
+                                <td>@user.ListRoles</td>
+                                <td class="w-25">
+                                    <form method="POST" class="d-inline">
+                                        <button name="Input.Id" value="@user.Id" class="btn btn-success btn-sm"
+                                            asp-page="./AddUserRole">
+                                            Update Role
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+
+                    @{
+
+                        Func<int?, string> generateUrl = (int? _pagenumber) =>
+                        {
+                            return Url.Page("./User", new { pageNumber = _pagenumber });
+                        };
+
+                        var datapaging = new
+                        {
+                            currentPage = Model.pageNumber,
+                            countPages = Model.TotalPage,
+                            generateUrl = generateUrl
+                        };
+
+                    }
+                    <partial name="_Paging" model="@datapaging" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

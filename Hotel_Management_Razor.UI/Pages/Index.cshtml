@@ -1,0 +1,232 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+@inject Hotel_Management.Core.Repository.UnitOfWork.IUnitOfWork _unitOfWork
+
+@ViewData["BookingID"]
+<div class="container h-100 my-4">
+    @foreach (var item in _unitOfWork.FloorRepository.GetAll())
+    {
+        <div class="d-flex mb-3">
+            <div class="floor bg-dark text-lg-center text-white">
+                @item.FloorName
+            </div>
+            <div class="btn-group dropend">
+
+                @foreach (var i in _unitOfWork.RoomRepository.FindRoomByFloor(item.FloorId))
+                {
+                    <button class="room btn btn-@_unitOfWork.StatusRepository.Find((int)i.StatusId).Color room text-lg-center text-white ms-2 rounded-3" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span>
+                            Room:  @i.RoomName
+                        </span>
+                        <div class="rounded-1">
+                            @if (i.StatusId == 2) // Kiểm tra nếu trạng thái là 2
+                            {
+                                 <span class="time">Start Time: @_unitOfWork.BookingRepository.GetBookingByRoom(i.RoomId).CheckInTime.Value.ToString("HH:mm")</span>
+
+                                <br />
+                               ///<span id="clock">Time: </span>
+                            }
+                        </div>
+                        <div>
+                            @if (i.StatusId == 2) // Kiểm tra nếu trạng thái là 2
+                            {
+                                <span class="customer-name">@_unitOfWork.BookingRepository.GetBookingByRoom(i.RoomId).Customer.CustomerName</span>
+                                // Hiển thị tên khách hàng
+                            }
+                            else
+                            {
+                                <span>@_unitOfWork.StatusRepository.Find((int)i.StatusId).StatusName</span>
+                            }
+                        </div>
+
+                    </button>
+                    <ul class="dropdown-menu">
+                        @if (i.StatusId == 1)
+                        {
+                            <li><button onclick="CheckIn(@i.RoomId, @i.RoomName)" class="dropdown-item">Nhận Phòng</button></li>
+
+                        }
+                        else if (i.StatusId == 2)
+                        {
+                            <li><button onclick="ChangeRoom(@i.RoomId)" class="dropdown-item">Chuyển Phòng</button></li>
+                            <li>
+                                <a asp-page="/Index" asp-page-handler="CheckOut" asp-route-BookingId="@_unitOfWork.BookingRepository.GetBookingByRoom(i.RoomId).BookingId" class="dropdown-item">Thanh toán</a>
+
+                           @*     <button onclick="CheckOut(
+                                        @_unitOfWork.BookingRepository.GetBookingByRoom(i.RoomId).Customer.CustomerName,
+                                        @_unitOfWork.BookingRepository.GetBookingByRoom(i.RoomId).CheckInTime,
+                                        @_unitOfWork.RoomRepository.GetPrice(i.RoomId).RoomType.Price,)" class="dropdown-item">
+                                    Thanh toán
+                                </button>*@
+
+                            </li>
+
+
+                        }else if(i.StatusId == 3)
+                        {
+                            <li><a asp-page-handler="ClearRoom" asp-route-RoomId="@i.RoomId" class="dropdown-item">Đã dọn xong</a></li>
+                        }
+                    </ul>
+
+                }
+            </div>
+
+        </div>
+    }
+</div>
+<!-- Modal ChangeRoom -->
+<div class="modal fade" id="changeRoomModal" tabindex="-1" aria-labelledby="changeRoomModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="changeRoomModalLabel">Change Room</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-flex justify-content-around">
+
+                @foreach (var room in _unitOfWork.RoomRepository.GetAll().Where(i => i.StatusId == 1))
+                {
+                    <form method="post" asp-page-handler="ChangeRoom">
+                        <input type="hidden" name="RoomIdPresent" id="roomIdInput" class="a" placeholder="Room Id" readonly>
+                        <input class="w-25" type="hidden" name="RoomIdChange" value="@room.RoomId" />
+                        <button type="submit" onclick="" class="btn btn-outline-success">@room.RoomName</button>
+                    </form>
+                }
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal CheckIn -->
+<div class="modal fade" id="checkinModal" tabindex="-1" aria-labelledby="checkinModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="checkinModalLabel">Check In: Room <span id="room-checkin"></span></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="">
+                        <h3>Customer Information</h3>
+                        <form method="post" asp-page-handler="CheckIn">
+                            <input type="hidden" name="RoomId" id="roomIdCheckIn" />
+                            <div class="input-group mb-3 ">
+                                <input type="text" name="CustomerName" class="form-control" placeholder="Khách lẻ">
+                            </div>
+                            <div class="input-group mb-3 ">
+                                <input type="text" name="CitizenId" class="form-control" placeholder="CitizenId">
+                            </div>
+                            <div class="input-group mb-3 ">
+                                <input type="text" name="PhoneNumber" class="form-control" placeholder="Phone Number">
+                            </div>
+                            <div class="input-group mb-3 ">
+                                <input type="text" name="Email" class="form-control" placeholder="Email">
+                            </div>
+                            <div class="input-group mb-3 ">
+                                <input type="text" name="Address" class="form-control" placeholder="Address">
+                            </div>
+                            <button type="submit" class="btn btn-outline-primary">CheckIn</button>
+                        </form>
+                    </div>
+@*                    <div class="col-md-4">
+                        <h3>Order</h3>
+                    </div>
+                    <div class="col-md-4">
+                        <h3>Product</h3>
+                        <div class="d-flex">
+                            @foreach (var product in _unitOfWork.ProductRepository.GetAll())
+                            {
+                                <button class="border-0">
+                                    <img height="70px" width="100px" src="@product.Image" alt="@product.ProductName" />
+                                </button>
+                            }
+                        </div>
+                    </div>*@
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal CheckOut -->
+<div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="checkoutModalLabel">Check Out<span id="room-checkout"></span></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <span id="customername"></span>
+                <span id="time"></span>
+                <span id="price"></span>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Mở modal chuyển phòng
+    function ChangeRoom(RoomId) {
+        const $changeRoomModal = new bootstrap.Modal(document.getElementById("changeRoomModal"));
+        const $roomIdInput = document.getElementsByClassName("a");
+        for (let i = 0; i < $roomIdInput.length; i++) {
+            $roomIdInput[i].value = RoomId;
+        }
+        $changeRoomModal.show();
+    }
+
+    // mở modal đặt phòng
+    function CheckIn(RoomId, RoomName) {
+        const $checkinModal = new bootstrap.Modal(document.getElementById("checkinModal"));
+        const $roomNameCheckin = document.getElementById("room-checkin");
+        const $roomIdCheckIn = document.getElementById("roomIdCheckIn");
+        $roomIdCheckIn.value = RoomId;
+        $roomNameCheckin.textContent = RoomName;
+        $checkinModal.show();
+    }
+
+    // mở modal thanh toán
+    function CheckOut(CustomerName, ChecInTime, Price) {
+        const $checkoutModal = new bootstrap.Modal(document.getElementById("checkoutModal"));
+        //const $name = document.getElementById("customername");
+        //const $time = document.getElementById("time");
+        //const $price = document.getElementById("price");
+
+        //$name.textContent = CustomerName;
+        //$time.textContent = ChecInTime;
+        //$price.textContent = Price;
+
+        $checkoutModal.show();
+    }
+
+    // Lấy thời gian check-in từ backend (ví dụ: định dạng "YYYY-MM-DD HH:mm:ss")
+    const $checkintime = document.getElementById("checkintime");
+    var checkInTime = $checkintime.value;
+
+    function updateClock() {
+        var now = new Date();
+        var checkIn = new Date(checkInTime);
+        var timeDiff = now.getTime() - checkIn.getTime();
+
+        var hours = Math.floor(timeDiff / (1000 * 60 * 60)).toString().padStart(2, '0');
+        var minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+        var seconds = Math.floor((timeDiff % (1000 * 60)) / 1000).toString().padStart(2, '0');
+        var timeString = hours + ':' + minutes + ':' + seconds;
+
+        document.getElementById('clock').textContent = timeString;
+    }
+
+    // Cập nhật đồng hồ thời gian mỗi giây
+    setInterval(updateClock, 1000);
+</script>

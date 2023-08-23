@@ -1,0 +1,46 @@
+﻿@model Room
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="d-flex justify-content-center">
+    <div class="card shadow mt-5 w-50">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Department Detail</h6>
+        </div>
+        <div class="card-body mt-2">
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.RoomName)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.RoomName)
+                </dd>
+@*                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Status)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Status)
+                </dd>*@
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Floor)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Floor.FloorName)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.RoomType)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.RoomType.RoomTypeName)
+                </dd>
+            </dl>
+            <div>
+                <a asp-action="Edit" asp-route-id="@Model?.RoomId">Edit</a> |
+                <a asp-action="Index">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>

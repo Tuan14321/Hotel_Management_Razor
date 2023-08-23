@@ -1,0 +1,55 @@
+﻿@model Room
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    var listRoomType = ViewBag.RoomType as SelectList;
+    var listFloor = ViewBag.Floor as SelectList;
+}
+
+<div class="d-flex justify-content-center">
+    <div class="card shadow mt-5 w-50">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Edit Room</h6>
+        </div>
+        <div class="card-body mt-2">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="RoomId" />
+                <div class="form-group">
+                    <label asp-for="RoomName" class="control-label"></label>
+                    <input asp-for="RoomName" class="form-control" />
+                    <span asp-validation-for="RoomName" class="text-danger"></span>
+                </div>
+@*                <div class="form-group">
+                    <label asp-for="Status" class="control-label"></label>
+                    <input asp-for="Status" class="form-control" />
+                    <select asp-for="Status" class="form-control">
+                        <option value="true">True</option>
+                        <option value="false">False</option>
+                    </select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>*@
+                <div class="form-group">
+                    <label asp-for="FloorId" class="control-label"></label>
+                    <select asp-for="FloorId" class="form-control" asp-items="listFloor"></select>
+                    <span asp-validation-for="FloorId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="RoomTypeId" class="control-label"></label>
+                    <select asp-for="RoomTypeId" class="form-control" asp-items="listRoomType"></select>
+                    <span asp-validation-for="RoomTypeId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+            <div>
+                <a asp-action="Index">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

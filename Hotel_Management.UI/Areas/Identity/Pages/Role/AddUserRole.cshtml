@@ -1,0 +1,37 @@
+﻿@page
+@model FA.JustBlog.UI.Areas.Identity.Pages.Roles.AddUserRoleModel
+@{
+    ViewData["Title"] = "Update role";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="vh-100">
+    <div class="container my-5">
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">Add Role</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>Select Role for <strong>@Model.Input.Name</strong></p>
+                        <form method="post">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.Input.RoleNames)
+                                @Html.ListBoxFor(x => x.Input.RoleNames,
+                                new SelectList( Model.AllRoles ),
+                                new {@class="w-100", id = "selectrole"})
+                            </div>
+                            <input type="hidden" asp-for="Input.Id">
+                            <input type="hidden" asp-for="isConfirmed">
+                            <button type="submit" class="btn btn-success">Update</button>
+                            <a class="btn btn-primary" asp-page="./User">List</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
